@@ -1,7 +1,10 @@
 package com.example.schedulemobile.data.network.networkTimetable
 
-import com.example.schedulemobile.data.network.*
+import com.example.schedulemobile.data.network.networkDay.NetworkDay
 import com.example.schedulemobile.data.network.networkGroup.NetworkGroup
+import com.example.schedulemobile.data.network.networkPair.NetworkPair
+import com.example.schedulemobile.data.network.networkTimetableType.NetworkTimetableType
+import com.example.schedulemobile.data.network.networkWeekType.NetworkWeekType
 
 data class NetworkTimetable(
     val day: NetworkDay,

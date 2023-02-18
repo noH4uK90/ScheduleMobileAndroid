@@ -1,10 +1,10 @@
 package com.example.schedulemobile.domain.models.timetable
 
-import com.example.schedulemobile.domain.models.Day
+import com.example.schedulemobile.domain.models.day.Day
 import com.example.schedulemobile.domain.models.group.Group
-import com.example.schedulemobile.domain.models.Pair
-import com.example.schedulemobile.domain.models.TimetableType
-import com.example.schedulemobile.domain.models.WeekType
+import com.example.schedulemobile.domain.models.pair.Pair
+import com.example.schedulemobile.domain.models.timetableType.TimetableType
+import com.example.schedulemobile.domain.models.weekType.WeekType
 
 data class Timetable(
     val id: Int,

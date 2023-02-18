@@ -1,6 +1,6 @@
 package com.example.schedulemobile.domain.models.group
 
-import com.example.schedulemobile.domain.models.Discipline
+import com.example.schedulemobile.domain.models.discipline.Discipline
 
 data class Group(
     val id: Int,

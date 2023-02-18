@@ -1,6 +1,0 @@
-package com.example.schedulemobile.domain.models
-
-data class TimetableType(
-    val id: Int,
-    val name: String
-)

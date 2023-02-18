@@ -20,7 +20,7 @@ object NetworkModule {
     @Singleton
     fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:7025/api/")
+            .baseUrl("http://192.168.0.4:7025/api/")
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()

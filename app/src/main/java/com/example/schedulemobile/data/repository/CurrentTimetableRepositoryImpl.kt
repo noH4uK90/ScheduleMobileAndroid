@@ -11,11 +11,12 @@ class CurrentTimetableRepositoryImpl @Inject constructor(
     private val api: TimetableApi
 ): CurrentTimetableRepository {
 
-    override suspend fun getCurrentTimetableList(groupId: Int): Resource<CurrentTimetableList> {
+    override suspend fun getCurrentTimetableList(groupId: Int, dayCount: Int): Resource<CurrentTimetableList> {
         return try {
             Resource.Success(
                 data = api.getCurrentTimetableList(
-                    groupId = groupId
+                    groupId = groupId,
+                    dayCount = dayCount
                 ).toCurrentTimetableList()
             )
         } catch (e: Exception) {
