@@ -14,7 +14,6 @@ import com.example.schedulemobile.presentation.ui.theme.ScheduleMobileTheme
 import com.example.schedulemobile.presentation.viewModels.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-@OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 

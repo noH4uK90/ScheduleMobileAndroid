@@ -5,5 +5,5 @@ import com.example.schedulemobile.domain.models.teacher.Teacher
 
 data class TeacherClassroom(
     val teacher: Teacher,
-    val classroom: Classroom
+    val classroom: Classroom?
 )

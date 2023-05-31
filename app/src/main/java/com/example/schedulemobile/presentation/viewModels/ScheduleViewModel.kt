@@ -8,7 +8,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.schedulemobile.domain.models.group.Group
+import com.example.schedulemobile.data.network.networkGroup.NetworkGroup
 import com.example.schedulemobile.domain.repository.CurrentTimetableRepository
 import com.example.schedulemobile.domain.util.Resource
 import com.example.schedulemobile.presentation.CurrentTimetableState
@@ -32,27 +32,35 @@ class ScheduleViewModel @Inject constructor(
                 isLoading = true,
                 error = null
             )
-            when (val result = repository.getCurrentTimetableList(getCurrentGroup().id)) {
-                is Resource.Success -> {
-                    state = state.copy(
-                        currentTimetableList = result.data,
-                        isLoading = false,
-                        error = null
-                    )
+            try {
+                when (val result = repository.getCurrentTimetableList(getCurrentGroup().id)) {
+                    is Resource.Success -> {
+                        state = state.copy(
+                            currentTimetableList = result.data,
+                            isLoading = false,
+                            error = null
+                        )
+                    }
+                    is Resource.Error -> {
+                        state = state.copy(
+                            currentTimetableList = null,
+                            isLoading = false,
+                            error = result.message
+                        )
+                    }
                 }
-                is Resource.Error -> {
-                    state = state.copy(
-                        currentTimetableList = null,
-                        isLoading = false,
-                        error = result.message
-                    )
-                }
+            } catch (e: Exception) {
+                state = state.copy(
+                    currentTimetableList = null,
+                    isLoading = false,
+                    error = "Ошибка при загрузке данных"
+                )
             }
         }
     }
 
-    private fun getCurrentGroup(): Group {
+    fun getCurrentGroup(): NetworkGroup {
         val jsonGroup = sharedPreferences.getString("group", null)
-        return Gson().fromJson(jsonGroup, Group::class.java)
+        return Gson().fromJson(jsonGroup, NetworkGroup::class.java)
     }
 }

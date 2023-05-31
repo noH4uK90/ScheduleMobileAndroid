@@ -4,10 +4,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
@@ -17,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.schedulemobile.R
-import com.example.schedulemobile.presentation.customComponents.OutputPair
+import com.example.schedulemobile.presentation.customComponents.OutputLesson
 import com.example.schedulemobile.presentation.navigation.NavRoute
 import com.example.schedulemobile.presentation.viewModels.ObserverLifecycle
 import com.example.schedulemobile.presentation.viewModels.ScheduleViewModel
@@ -32,15 +34,19 @@ fun ScheduleView(
     navController: NavController,
     viewModel: ScheduleViewModel
 ) {
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    viewModel.ObserverLifecycle(lifecycle = lifecycleOwner.lifecycle)
+
+    val isLoading = viewModel.state.isLoading
+
     val pagerState = rememberPagerState()
-    var currentDay: String? by rememberSaveable { mutableStateOf(null) }
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val items = DrawerItems.values()
 
-    viewModel.ObserverLifecycle(LocalLifecycleOwner.current.lifecycle)
-
     val currentTimetableList = viewModel.state.currentTimetableList?.items
+    val currentGroup = viewModel.getCurrentGroup()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -70,7 +76,7 @@ fun ScheduleView(
                     modifier = Modifier,
                     title = {
                         Text(
-                            text = viewModel.state.currentTimetableList?.items?.first()?.group?.name ?: "",
+                            text = currentGroup.name,
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Black
@@ -91,7 +97,58 @@ fun ScheduleView(
                     )
             },
             content = { paddingValues ->
-                HorizontalPager(
+                if (isLoading) {
+                    LoadingView()
+                } else {
+                    HorizontalPager(
+                        state = pagerState,
+                        count = currentTimetableList?.size ?: 0,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                        userScrollEnabled = true
+                    ) { pageIndex ->
+                        val timetables = currentTimetableList?.get(pageIndex)
+                        //val lessons = timetables?.dates?.get(pagerState.currentPage)?.items?.get(pagerState.currentPage)?.lessons
+                        val currentDay = timetables?.dates?.get(pagerState.currentPage)?.key?.day?.name
+
+                        Column(
+                            modifier = Modifier
+                                .padding(horizontal = 20.dp, vertical = 15.dp)
+                                .border(
+                                    width = 2.dp,
+                                    MaterialTheme.colorScheme.primary,
+                                    RoundedCornerShape(15.dp)
+                                )
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 10.dp),
+                                text = currentDay ?: "",
+                                textAlign = TextAlign.Center,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight(600)
+                            )
+                            Card(
+                                modifier = Modifier
+                                    .padding(vertical = 15.dp, horizontal = 15.dp)
+                            ) {
+                                LazyColumn {
+                                    items(
+                                        items = timetables?.dates?.get(pagerState.currentPage)?.items
+                                            ?: emptyList()
+                                    ) { timetable ->
+                                        timetable.lessons.map { lesson ->
+                                            OutputLesson(lesson = lesson)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                /*HorizontalPager(
                     count = 6,
                     state = pagerState,
                     modifier = Modifier
@@ -100,8 +157,8 @@ fun ScheduleView(
                     userScrollEnabled = true
                 ) {
                     currentTimetableList?.map {
-                        currentDay = it.days[currentPage].key.name
-                        it.days[currentPage].items.map { timetable ->
+                        currentDay = it.dates[currentPage].key.day.name
+                        it.dates[currentPage].items.map { timetable ->
                             Column(
                                 modifier = Modifier
                                     .padding(horizontal = 20.dp, vertical = 15.dp)
@@ -126,8 +183,8 @@ fun ScheduleView(
                                 ) {
                                     LazyColumn(
                                         content = {
-                                            timetable.pairs.map { pair ->
-                                                item { OutputPair(pair = pair) }
+                                            timetable.lessons.map { lesson ->
+                                                item { OutputLesson(lesson = lesson) }
                                             }
                                         }
                                     )
@@ -135,7 +192,7 @@ fun ScheduleView(
                             }
                         }
                     }
-                }
+                }*/
             }
         )
     }

@@ -2,13 +2,14 @@ package com.example.schedulemobile.di
 
 import com.example.schedulemobile.data.GroupApi
 import com.example.schedulemobile.data.TimetableApi
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.time.Duration
 import javax.inject.Singleton
 
@@ -16,13 +17,18 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    val gson = GsonBuilder()
+        .setLenient()
+        .create()
+
     @Provides
     @Singleton
     fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.0.4:7025/api/")
+            .baseUrl("http://192.168.0.3:5291/api/")
+            //.baseUrl("https://gewofo6202.bsite.net/api/")
             .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 

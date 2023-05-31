@@ -5,5 +5,6 @@ import com.example.schedulemobile.data.network.networkClassroomType.NetworkClass
 data class NetworkClassroom(
     val id: Int,
     val cabinet: String,
-    val types: List<NetworkClassroomType>
+    val types: List<NetworkClassroomType>,
+    val isDeleted: Boolean
 )

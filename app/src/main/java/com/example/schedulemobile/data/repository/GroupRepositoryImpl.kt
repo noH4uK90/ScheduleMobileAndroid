@@ -11,14 +11,31 @@ class GroupRepositoryImpl @Inject constructor(
     private val api: GroupApi
 ): GroupRepository {
 
-    override suspend fun getGroups(): Resource<GroupList> {
+    override suspend fun getGroups(pageNumber: Int, pageSize: Int): Resource<GroupList> {
         return try {
             Resource.Success(
-                data = api.getGroups().toGroupList()
+                data = api.getGroups(
+                    pageNumber = pageNumber,
+                    pageSize = pageSize
+                ).toGroupList()
             )
         } catch (e: Exception) {
             e.printStackTrace()
-            Resource.Error(e.message ?: "An unknown error occurred.")
+            Resource.Error(e.message ?: "Неизвестная ошибка.")
+        }
+    }
+
+    override suspend fun loadMoreGroups(pageNumber: Int, pageSize: Int): Resource<GroupList> {
+        return try {
+            Resource.Success(
+                data = api.getGroups(
+                    pageNumber = pageNumber,
+                    pageSize = pageSize
+                ).toGroupList()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e.message ?: "Неизвестная ошибка.")
         }
     }
 }

@@ -8,7 +8,7 @@ interface TimetableApi {
 
     @GET("Timetable/Current")
     suspend fun getCurrentTimetableList(
-        @Query("groupId") groupId: Int,
-        @Query("dayCount") dayCount: Int = 7
+        @Query("GroupId") groupId: Int,
+        @Query("DateCount") dayCount: Int = 7
     ): NetworkCurrentTimetableList
 }

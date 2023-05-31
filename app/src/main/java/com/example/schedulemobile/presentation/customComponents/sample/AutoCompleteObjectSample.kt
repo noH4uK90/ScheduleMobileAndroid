@@ -1,21 +1,5 @@
 package com.example.schedulemobile.presentation.customComponents.sample
 
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.unit.dp
-import com.example.schedulemobile.domain.models.group.Group
-import com.example.schedulemobile.domain.models.group.GroupList
-import com.example.schedulemobile.presentation.customComponents.autoComplete.utils.AutoCompleteBox
-import com.example.schedulemobile.presentation.customComponents.searchBar.TextSearchBar
-
 /*@Composable
 fun AutoCompleteObjectSample(groups: GroupList) {
     AutoCompleteBox(

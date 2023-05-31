@@ -1,10 +1,11 @@
 package com.example.schedulemobile.domain.models.currentTimetable
 
-import com.example.schedulemobile.domain.models.day.Day
+import com.example.schedulemobile.domain.models.date.Date
 import com.example.schedulemobile.domain.models.group.Group
-import com.example.schedulemobile.domain.models.groupedTimetable.GroupedTimetable
+import com.example.schedulemobile.domain.models.group.Grouped
+import com.example.schedulemobile.domain.models.timetable.Timetable
 
 data class CurrentTimetable(
-    val group: Group,
-    val days: List<GroupedTimetable<Day>>
+    val groups: List<Group>,
+    val dates: List<Grouped<Date, Timetable>>
 )

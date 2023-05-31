@@ -5,5 +5,5 @@ import com.example.schedulemobile.data.network.networkTeacher.NetworkTeacher
 
 data class NetworkTeacherClassroom(
     val teacher: NetworkTeacher,
-    val classroom: NetworkClassroom
+    val classroom: NetworkClassroom?
 )

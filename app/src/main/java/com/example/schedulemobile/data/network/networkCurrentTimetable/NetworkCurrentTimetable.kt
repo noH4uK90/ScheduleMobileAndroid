@@ -1,10 +1,11 @@
 package com.example.schedulemobile.data.network.networkCurrentTimetable
 
-import com.example.schedulemobile.data.network.networkDay.NetworkDay
+import com.example.schedulemobile.data.network.networkDate.NetworkDate
 import com.example.schedulemobile.data.network.networkGroup.NetworkGroup
-import com.example.schedulemobile.data.network.networkGroupedTimetable.NetworkGroupedTimetable
+import com.example.schedulemobile.data.network.networkGroup.NetworkGrouped
+import com.example.schedulemobile.data.network.networkTimetable.NetworkTimetable
 
 data class NetworkCurrentTimetable(
-    val group: NetworkGroup,
-    val days: List<NetworkGroupedTimetable<NetworkDay>>
+    val groups: List<NetworkGroup>,
+    val dates: List<NetworkGrouped<NetworkDate, NetworkTimetable>>
 )
