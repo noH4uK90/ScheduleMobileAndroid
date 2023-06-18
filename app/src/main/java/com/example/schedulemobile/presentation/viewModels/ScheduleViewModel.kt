@@ -1,22 +1,13 @@
 package com.example.schedulemobile.presentation.viewModels
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.cachedIn
-import com.example.schedulemobile.data.network.networkGroup.NetworkGroup
-import com.example.schedulemobile.data.remote.TimetableSource
 import com.example.schedulemobile.domain.models.group.Group
 import com.example.schedulemobile.domain.repository.CurrentTimetableRepository
 import com.example.schedulemobile.domain.util.Resource
