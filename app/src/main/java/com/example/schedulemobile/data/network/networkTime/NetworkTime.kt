@@ -7,6 +7,6 @@ data class NetworkTime(
     val start: String,
     val end: String,
     val lessonNumber: Int,
-    val type: NetworkTimeType,
+    val type: NetworkTimeType?,
     val isDeleted: Boolean
 )

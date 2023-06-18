@@ -6,6 +6,7 @@ import com.example.schedulemobile.data.network.networkGroup.NetworkGrouped
 import com.example.schedulemobile.data.network.networkTimetable.NetworkTimetable
 
 data class NetworkCurrentTimetable(
-    val groups: List<NetworkGroup>,
-    val dates: List<NetworkGrouped<NetworkDate, NetworkTimetable>>
+    val groups: List<NetworkGroup>?,
+    val groupNames: String?,
+    val dates: List<NetworkGrouped<NetworkDate, NetworkTimetable>>?
 )

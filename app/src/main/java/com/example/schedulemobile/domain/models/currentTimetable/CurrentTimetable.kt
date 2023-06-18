@@ -6,6 +6,7 @@ import com.example.schedulemobile.domain.models.group.Grouped
 import com.example.schedulemobile.domain.models.timetable.Timetable
 
 data class CurrentTimetable(
-    val groups: List<Group>,
-    val dates: List<Grouped<Date, Timetable>>
+    val groups: List<Group>?,
+    val groupNames: String?,
+    val dates: List<Grouped<Date, Timetable>>?
 )

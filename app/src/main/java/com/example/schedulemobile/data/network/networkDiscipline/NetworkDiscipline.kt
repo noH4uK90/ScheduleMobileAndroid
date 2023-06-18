@@ -11,6 +11,6 @@ data class NetworkDiscipline(
     val totalHours: Int,
     val isDeleted: Boolean,
     val disciplineType: NetworkDisciplineType?,
-    val term: NetworkTerm,
+    val term: NetworkTerm?,
     val speciality: NetworkSpeciality?
 )

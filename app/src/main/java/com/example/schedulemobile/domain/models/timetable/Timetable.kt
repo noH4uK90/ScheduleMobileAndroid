@@ -7,6 +7,6 @@ import com.example.schedulemobile.domain.models.lesson.Lesson
 data class Timetable(
     val id: Int,
     val date: Date,
-    val groups: List<Group>,
-    val lessons: List<Lesson>
+    val groups: List<Group>?,
+    val lessons: List<Lesson>?
 )

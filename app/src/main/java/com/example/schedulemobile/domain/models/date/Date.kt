@@ -9,8 +9,8 @@ data class Date(
     val id: Int,
     val isStudy: Boolean,
     val term: Int,
-    val value: LocalDateTime,
+    val value: String,
     val day: Day,
-    val timeType: TimeType,
-    val weekType: WeekType
+    val timeType: TimeType?,
+    val weekType: WeekType?
 )

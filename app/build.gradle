@@ -74,6 +74,14 @@ subprojects {
 
 dependencies {
 
+    // SignalR
+    implementation("com.microsoft.signalr:signalr:7.0.0")
+    implementation("org.java-websocket:Java-WebSocket:1.5.3")
+
+    // Paging
+    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha20")
+
     // Retrofit
         def retrofit_version = "2.9.0"
     implementation 'com.google.code.gson:gson:2.10.1'
@@ -99,6 +107,7 @@ dependencies {
     // Accompanist
     implementation "com.google.accompanist:accompanist-pager:0.28.0"
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
+    implementation "com.google.accompanist:accompanist-swiperefresh:0.28.0"
 
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"

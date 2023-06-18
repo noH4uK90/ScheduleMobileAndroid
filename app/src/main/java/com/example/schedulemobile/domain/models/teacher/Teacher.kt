@@ -5,6 +5,5 @@ data class Teacher(
     val name: String,
     val surname: String,
     val middleName: String,
-    val email: String,
-    val isDeleted: Boolean
+    val email: String
 )

@@ -7,6 +7,6 @@ import com.example.schedulemobile.data.network.networkLesson.NetworkLesson
 data class NetworkTimetable(
     val id: Int,
     val date: NetworkDate,
-    val groups: List<NetworkGroup>,
-    val lessons: List<NetworkLesson>
+    val groups: List<NetworkGroup>?,
+    val lessons: List<NetworkLesson>?
 )

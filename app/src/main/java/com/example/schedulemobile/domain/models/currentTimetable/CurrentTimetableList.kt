@@ -5,5 +5,5 @@ data class CurrentTimetableList(
     val pageNumber: Int,
     val totalCount: Int,
     val totalPages: Int,
-    val items: List<CurrentTimetable>
+    val items: List<CurrentTimetable>?
 )

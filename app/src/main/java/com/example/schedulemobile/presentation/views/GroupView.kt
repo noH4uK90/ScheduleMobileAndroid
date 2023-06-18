@@ -2,15 +2,17 @@ package com.example.schedulemobile.presentation.views
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,26 +32,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import com.example.schedulemobile.presentation.navigation.NavRoute
 import com.example.schedulemobile.presentation.viewModels.GroupViewModel
-import com.example.schedulemobile.presentation.viewModels.ObserverLifecycle
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun GroupView(
     navController: NavController,
     viewModel: GroupViewModel
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
-    viewModel.ObserverLifecycle(lifecycle = lifecycleOwner.lifecycle)
 
     val snackBarHostState = remember { SnackbarHostState() }
-    val isLoading = viewModel.state.isLoading
     val isSnackBarShowing = viewModel.isSnackBarShowing
-    val groupList = viewModel.state.groupList
+    val focusManager = LocalFocusManager.current
+    val groups = viewModel.groups.collectAsLazyPagingItems()
 
     LaunchedEffect(isSnackBarShowing) {
         if (isSnackBarShowing) {
@@ -57,81 +61,101 @@ fun GroupView(
             viewModel.isSnackBarShowing = false
         }
     }
+    var active by rememberSaveable { mutableStateOf(false) }
+    var searchQuery by rememberSaveable { mutableStateOf("") }
 
-    if (isLoading) {
-        LoadingView()
-    } else {
-        var text by rememberSaveable { mutableStateOf("") }
-        var active by rememberSaveable { mutableStateOf(false) }
-        val focusManager = LocalFocusManager.current
+    fun closeSearchBar() {
+        active = false
+        focusManager.clearFocus()
+    }
 
-        fun closeSearchBar() {
-            active = false
-            focusManager.clearFocus()
-        }
-
-        Scaffold(
-            snackbarHost = { SnackbarHost(snackBarHostState) },
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackBarHostState) },
+        modifier = Modifier
+            .fillMaxSize()
+    ) { paddingValues ->
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-        ) { paddingValues ->
-            Column(
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            // Элемент выбора группы из списка
+            DockedSearchBar(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                    .heightIn(20.dp)
+                    .padding(top = 8.dp)
+                    .padding(horizontal = 15.dp),
+                query = searchQuery,
+                onQueryChange = { query ->
+                    searchQuery = query
+                    viewModel.setSearchQuery(query)
+                },
+                onSearch = { closeSearchBar() },
+                active = active,
+                onActiveChange = {
+                    active = it
+                    if (!active) focusManager.clearFocus()
+                },
+                placeholder = { Text("Группа") },
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Search,
+                        contentDescription = null,
+                        modifier = Modifier.clickable { closeSearchBar() }
+                    )
+                },
             ) {
-                DockedSearchBar(
-                    modifier = Modifier
-                        .heightIn(20.dp)
-                        .padding(top = 8.dp),
-                    query = text,
-                    onQueryChange = { text = it },
-                    onSearch = { closeSearchBar() },
-                    active = active,
-                    onActiveChange = {
-                        active = it
-                        if (!active) focusManager.clearFocus()
-                    },
-                    placeholder = { Text("Группа") },
-                    leadingIcon = {
-                        Icon(
-                            Icons.Default.Search,
-                            contentDescription = null,
-                            modifier = Modifier.clickable { closeSearchBar() }
+                // Проверка, загружены ли данные из API
+                if (groups.loadState.refresh is LoadState.Loading) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        // Элемент загрузки
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
                         )
-                    },
-                ) {
+                    }
+                } else {
+                    // Список с группами
                     LazyColumn {
-                        items(items = groupList?.items?.filter {
-                            it.name.contains(text, ignoreCase = true)
-                        } ?: emptyList()) {
-                            ListItem(
-                                headlineContent = { Text(it.name) },
-                                modifier = Modifier.clickable {
-                                    text = it.name
-                                    closeSearchBar()
-                                }
+                        items(
+                            count = groups.itemCount,
+                            key = groups.itemKey(),
+                            contentType = groups.itemContentType(
                             )
-                            Divider()
+                        ) { index ->
+                            val item = groups[index]
+                            if (item != null) {
+                                // Элемент списка
+                                ListItem(
+                                    headlineContent = { Text(item.name) },
+                                    modifier = Modifier.clickable {
+                                        searchQuery = item.name
+                                        closeSearchBar()
+                                    }
+                                )
+                                Divider()
+                            }
                         }
                     }
                 }
-
-                Button(
-                    modifier = Modifier
-                        .padding(top = 10.dp),
-                    onClick = {
-                        focusManager.clearFocus()
-                        if (viewModel.validGroup(text)) navController.navigate(NavRoute.ScheduleScreen.route)
-                        else viewModel.isSnackBarShowing = true
-                    },
-                    content = {
-                        Text(text = "Сохранить")
-                    }
-                )
             }
+
+            Button(
+                modifier = Modifier
+                    .padding(top = 10.dp),
+                onClick = {
+                    viewModel.viewModelScope.launch {
+                        focusManager.clearFocus()
+
+                        if (viewModel.validGroup(searchQuery)) navController.navigate(NavRoute.ScheduleScreen.route)
+                        else viewModel.isSnackBarShowing = true
+                    }
+                },
+                content = {
+                    Text(text = "Сохранить")
+                }
+            )
         }
     }
 }

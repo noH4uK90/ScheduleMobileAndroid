@@ -1,5 +1,5 @@
 package com.example.schedulemobile.domain.models.course
 
 data class Course(
-    val value: Int
+    val id: Int
 )

@@ -9,7 +9,7 @@ data class NetworkGroup(
     val name: String,
     val enrollmentYear: Int,
     val isDeleted: Boolean,
-    val term: NetworkTerm,
+    val term: NetworkTerm?,
     val speciality: NetworkSpeciality,
-    val mergedGroups: List<NetworkGroup>?
+    //val mergedGroups: List<NetworkGroup>?
 )

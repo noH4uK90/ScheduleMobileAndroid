@@ -8,30 +8,36 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.schedulemobile.domain.models.teacher.Teacher
+import com.example.schedulemobile.domain.util.getShortFullName
 
 @Composable
 fun TeacherText(
     modifier: Modifier = Modifier,
-    teacher: Teacher?
+    teacher: Teacher?,
+    color: Color
 ) {
     Column(
         modifier = modifier
             .height(40.dp)
             .border(width = 2.dp,
-                brush = SolidColor(MaterialTheme.colorScheme.primary),
+                brush = SolidColor(color),
                 shape = RoundedCornerShape(10)
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = teacher?.surname ?: "",
+            text = getShortFullName(teacher),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             style = TextStyle(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 16.sp,

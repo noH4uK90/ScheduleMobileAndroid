@@ -11,6 +11,6 @@ data class Discipline(
     val totalHours: Int,
     val isDeleted: Boolean,
     val disciplineType: DisciplineType?,
-    val term: Term,
+    val term: Term?,
     val speciality: Speciality?
 )

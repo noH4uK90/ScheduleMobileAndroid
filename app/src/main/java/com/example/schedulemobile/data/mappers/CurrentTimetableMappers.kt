@@ -1,31 +1,26 @@
 package com.example.schedulemobile.data.mappers
 
 import com.example.schedulemobile.data.network.networkClassroom.NetworkClassroom
-import com.example.schedulemobile.data.network.networkClassroom.NetworkClassroomList
-import com.example.schedulemobile.data.network.networkClassroomType.NetworkClassroomType
-import com.example.schedulemobile.data.network.networkDay.NetworkDay
-import com.example.schedulemobile.data.network.networkDiscipline.NetworkDiscipline
-import com.example.schedulemobile.data.network.networkGroup.NetworkGroup
-import com.example.schedulemobile.data.network.networkLesson.NetworkLesson
-import com.example.schedulemobile.data.network.networkTeacher.NetworkTeacher
-import com.example.schedulemobile.data.network.networkTeacherClassroom.NetworkTeacherClassroom
-import com.example.schedulemobile.data.network.networkTimetable.NetworkTimetable
-import com.example.schedulemobile.data.network.networkWeekType.NetworkWeekType
-import com.example.schedulemobile.domain.models.classroom.ClassroomList
 import com.example.schedulemobile.data.network.networkCourse.NetworkCourse
 import com.example.schedulemobile.data.network.networkCurrentTimetable.NetworkCurrentTimetable
-import com.example.schedulemobile.domain.models.classroomType.ClassroomTypeList
 import com.example.schedulemobile.data.network.networkCurrentTimetable.NetworkCurrentTimetableList
 import com.example.schedulemobile.data.network.networkDate.NetworkDate
+import com.example.schedulemobile.data.network.networkDay.NetworkDay
+import com.example.schedulemobile.data.network.networkDiscipline.NetworkDiscipline
 import com.example.schedulemobile.data.network.networkDisciplineType.NetworkDisciplineType
+import com.example.schedulemobile.data.network.networkGroup.NetworkGroup
 import com.example.schedulemobile.data.network.networkGroup.NetworkGroupList
 import com.example.schedulemobile.data.network.networkGroup.NetworkGrouped
+import com.example.schedulemobile.data.network.networkLesson.NetworkLesson
 import com.example.schedulemobile.data.network.networkSpeciality.NetworkSpeciality
+import com.example.schedulemobile.data.network.networkTeacher.NetworkTeacher
+import com.example.schedulemobile.data.network.networkTeacherClassroom.NetworkTeacherClassroom
 import com.example.schedulemobile.data.network.networkTerm.NetworkTerm
 import com.example.schedulemobile.data.network.networkTime.NetworkTime
 import com.example.schedulemobile.data.network.networkTimeType.NetworkTimeType
+import com.example.schedulemobile.data.network.networkTimetable.NetworkTimetable
+import com.example.schedulemobile.data.network.networkWeekType.NetworkWeekType
 import com.example.schedulemobile.domain.models.classroom.Classroom
-import com.example.schedulemobile.domain.models.classroomType.ClassroomType
 import com.example.schedulemobile.domain.models.course.Course
 import com.example.schedulemobile.domain.models.currentTimetable.CurrentTimetable
 import com.example.schedulemobile.domain.models.currentTimetable.CurrentTimetableList
@@ -53,7 +48,7 @@ fun NetworkCurrentTimetableList.toCurrentTimetableList(): CurrentTimetableList {
         pageNumber = pageNumber,
         totalCount = totalCount,
         totalPages = totalPages,
-        items = items.map(NetworkCurrentTimetable::toCurrentTimetable)
+        items = items?.map(NetworkCurrentTimetable::toCurrentTimetable)
     )
 }
 
@@ -73,7 +68,7 @@ fun NetworkDiscipline.toDiscipline(): Discipline {
         totalHours = totalHours,
         isDeleted = isDeleted,
         disciplineType = disciplineType?.toDisciplineType(),
-        term = term.toTerm(),
+        term = term?.toTerm(),
         speciality = speciality?.toSpeciality()
     )
 }
@@ -85,9 +80,8 @@ fun NetworkGroup.toGroup(): Group {
         name = name,
         enrollmentYear = enrollmentYear,
         isDeleted = isDeleted,
-        term = term.toTerm(),
-        speciality = speciality.toSpeciality(),
-        mergedGroups = mergedGroups?.map(NetworkGroup::toGroup)
+        term = term?.toTerm(),
+        speciality = speciality.toSpeciality()
     )
 }
 
@@ -108,18 +102,10 @@ fun NetworkGroupList.toGroupList(): GroupList {
     )
 }
 
-fun NetworkClassroomType.toClassroomType(): ClassroomType {
-    return ClassroomType(
-        id = id,
-        name = name,
-        isDeleted = isDeleted
-    )
-}
-
 fun NetworkGrouped<NetworkDate, NetworkTimetable>.toGroupedTimetable(): Grouped<Date, Timetable> {
     return Grouped(
         key = key.toDate(),
-        items = items.map(NetworkTimetable::toTimetable)
+        items = items?.map(NetworkTimetable::toTimetable)
     )
 }
 
@@ -130,9 +116,9 @@ fun NetworkLesson.toLesson(): Lesson {
         subgroup = subgroup,
         timetableId = timetableId,
         isChanged = isChanged,
-        time = time.toTime(),
-        discipline = discipline.toDiscipline(),
-        teacherClassroom = teacherClassroom.map(NetworkTeacherClassroom::toTeacherClassroom)
+        time = time?.toTime(),
+        discipline = discipline?.toDiscipline(),
+        teacherClassrooms = teacherClassrooms.map(NetworkTeacherClassroom::toTeacherClassroom)
     )
 }
 
@@ -142,7 +128,7 @@ fun NetworkTime.toTime(): Time {
         start = start,
         end = end,
         lessonNumber = lessonNumber,
-        type = type.toTimeType(),
+        type = type?.toTimeType(),
         isDeleted = isDeleted
     )
 }
@@ -160,17 +146,14 @@ fun NetworkTeacher.toTeacher(): Teacher {
         name = name,
         surname = surname,
         middleName = middleName,
-        email = email,
-        isDeleted = isDeleted
+        email = email
     )
 }
 
 fun NetworkClassroom.toClassroom(): Classroom {
     return Classroom(
         id = id,
-        cabinet = cabinet,
-        types = types.map(NetworkClassroomType::toClassroomType),
-        isDeleted = isDeleted
+        cabinet = cabinet
     )
 }
 
@@ -178,8 +161,8 @@ fun NetworkTimetable.toTimetable(): Timetable {
     return Timetable(
         id = id,
         date = date.toDate(),
-        groups = groups.map(NetworkGroup::toGroup),
-        lessons = lessons.map(NetworkLesson::toLesson)
+        groups = groups?.map(NetworkGroup::toGroup),
+        lessons = lessons?.map(NetworkLesson::toLesson)
     )
 }
 
@@ -190,22 +173,21 @@ fun NetworkDate.toDate(): Date {
         term = term,
         value = value,
         day = day.toDay(),
-        timeType = timeType.toTimeType(),
-        weekType = weekType.toWeekType()
+        timeType = timeType?.toTimeType(),
+        weekType = weekType?.toWeekType()
     )
 }
 
 fun NetworkTimeType.toTimeType(): TimeType {
     return TimeType(
         id = id,
-        name = name,
-        isDeleted = isDeleted
+        name = name
     )
 }
 
 fun NetworkTerm.toTerm(): Term {
     return Term(
-        value = value,
+        id = id,
         courseTerm = courseTerm,
         course = course.toCourse()
     )
@@ -213,7 +195,7 @@ fun NetworkTerm.toTerm(): Term {
 
 fun NetworkCourse.toCourse(): Course {
     return Course(
-        value = value
+        id = id
     )
 }
 
@@ -230,8 +212,9 @@ fun NetworkSpeciality.toSpeciality(): Speciality {
 
 fun NetworkCurrentTimetable.toCurrentTimetable(): CurrentTimetable {
     return CurrentTimetable(
-        groups = groups.map(NetworkGroup::toGroup),
-        dates = dates.map(NetworkGrouped<NetworkDate, NetworkTimetable>::toGroupedTimetable)
+        groups = groups?.map(NetworkGroup::toGroup),
+        groupNames = groupNames,
+        dates = dates?.map(NetworkGrouped<NetworkDate, NetworkTimetable>::toGroupedTimetable)
     )
 }
 

@@ -3,7 +3,9 @@ package com.example.schedulemobile.presentation.customComponents
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,18 +16,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.schedulemobile.domain.models.classroom.Classroom
+import com.example.schedulemobile.domain.models.lesson.Lesson
 
 @Composable
-fun CabinetText(
+fun SubgroupsText(
     modifier: Modifier = Modifier,
-    cabinet: Classroom?,
+    lesson: Lesson,
     color: Color
 ) {
     Column(
         modifier = modifier
+            .fillMaxWidth()
             .height(40.dp)
             .border(width = 2.dp,
                 brush = SolidColor(color),
@@ -35,11 +40,15 @@ fun CabinetText(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = cabinet?.cabinet ?: "",
+            text = "Подгруппа: ${lesson.subgroup}",
+            modifier = modifier.padding(horizontal = 3.dp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             style = TextStyle(
                 color = MaterialTheme.colorScheme.onSurface,
-                fontSize = 16.sp,
+                fontSize = 15.sp,
                 fontWeight = FontWeight(500),
+                textAlign = TextAlign.Center
             )
         )
     }

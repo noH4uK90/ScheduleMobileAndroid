@@ -10,7 +10,7 @@ data class Lesson(
     val subgroup: Int?,
     val timetableId: Int,
     val isChanged: Boolean,
-    val time: Time,
-    val discipline: Discipline,
-    val teacherClassroom: List<TeacherClassroom>
+    val time: Time?,
+    val discipline: Discipline?,
+    val teacherClassrooms: List<TeacherClassroom>
 )

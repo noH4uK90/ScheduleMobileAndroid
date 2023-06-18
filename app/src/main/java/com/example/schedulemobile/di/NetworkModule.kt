@@ -1,7 +1,7 @@
 package com.example.schedulemobile.di
 
-import com.example.schedulemobile.data.GroupApi
-import com.example.schedulemobile.data.TimetableApi
+import com.example.schedulemobile.data.remote.GroupApi
+import com.example.schedulemobile.data.remote.TimetableApi
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides

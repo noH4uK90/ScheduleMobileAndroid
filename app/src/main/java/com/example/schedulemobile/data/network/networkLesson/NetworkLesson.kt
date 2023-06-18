@@ -10,7 +10,7 @@ data class NetworkLesson(
     val subgroup: Int?,
     val timetableId: Int,
     val isChanged: Boolean,
-    val time: NetworkTime,
-    val discipline: NetworkDiscipline,
-    val teacherClassroom: List<NetworkTeacherClassroom>
+    val time: NetworkTime?,
+    val discipline: NetworkDiscipline?,
+    val teacherClassrooms: List<NetworkTeacherClassroom>
 )

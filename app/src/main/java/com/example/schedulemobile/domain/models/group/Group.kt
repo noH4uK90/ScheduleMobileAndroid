@@ -9,7 +9,7 @@ data class Group(
     val name: String,
     val enrollmentYear: Int,
     val isDeleted: Boolean,
-    val term: Term,
+    val term: Term?,
     val speciality: Speciality,
-    val mergedGroups: List<Group>?
+    //val mergedGroups: List<Group>?
 )

@@ -9,8 +9,8 @@ data class NetworkDate(
     val id: Int,
     val isStudy: Boolean,
     val term: Int,
-    val value: LocalDateTime,
+    val value: String,
     val day: NetworkDay,
-    val timeType: NetworkTimeType,
-    val weekType: NetworkWeekType
+    val timeType: NetworkTimeType?,
+    val weekType: NetworkWeekType?
 )

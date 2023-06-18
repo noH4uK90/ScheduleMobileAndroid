@@ -7,6 +7,6 @@ data class Time(
     val start: String,
     val end: String,
     val lessonNumber: Int,
-    val type: TimeType,
+    val type: TimeType?,
     val isDeleted: Boolean
 )

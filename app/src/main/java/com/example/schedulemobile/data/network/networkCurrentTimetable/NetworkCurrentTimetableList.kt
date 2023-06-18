@@ -5,5 +5,5 @@ data class NetworkCurrentTimetableList(
     val pageNumber: Int,
     val totalCount: Int,
     val totalPages: Int,
-    val items: List<NetworkCurrentTimetable>
+    val items: List<NetworkCurrentTimetable>?
 )

@@ -1,6 +1,6 @@
 package com.example.schedulemobile.data.repository
 
-import com.example.schedulemobile.data.GroupApi
+import com.example.schedulemobile.data.remote.GroupApi
 import com.example.schedulemobile.data.mappers.toGroupList
 import com.example.schedulemobile.domain.models.group.GroupList
 import com.example.schedulemobile.domain.repository.GroupRepository
@@ -11,11 +11,12 @@ class GroupRepositoryImpl @Inject constructor(
     private val api: GroupApi
 ): GroupRepository {
 
-    override suspend fun getGroups(pageNumber: Int, pageSize: Int): Resource<GroupList> {
+    override suspend fun getGroupsByPage(search: String?, page: Int, pageSize: Int): Resource<GroupList> {
         return try {
             Resource.Success(
-                data = api.getGroups(
-                    pageNumber = pageNumber,
+                data = api.getGroupsByPage(
+                    search = search,
+                    page = page,
                     pageSize = pageSize
                 ).toGroupList()
             )
@@ -25,11 +26,16 @@ class GroupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun loadMoreGroups(pageNumber: Int, pageSize: Int): Resource<GroupList> {
+    override suspend fun searchGroup(
+        search: String,
+        page: Int,
+        pageSize: Int
+    ): Resource<GroupList> {
         return try {
             Resource.Success(
-                data = api.getGroups(
-                    pageNumber = pageNumber,
+                data = api.searchGroup(
+                    search = search,
+                    page = page,
                     pageSize = pageSize
                 ).toGroupList()
             )
