@@ -163,7 +163,7 @@ fun ScheduleView(
                                             items = currentTimetableList?.dates?.get(pageIndex)?.items
                                                 ?: emptyList()
                                         ) { timetable ->
-                                            timetable.lessons?.map { lesson ->
+                                            timetable.lessons?.forEach { lesson ->
                                                 OutputLesson(lesson = lesson)
                                             }
                                         }
