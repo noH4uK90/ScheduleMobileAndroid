@@ -4,6 +4,7 @@ import com.example.schedulemobile.data.network.networkCurrentTimetable.NetworkCu
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+@FunctionalInterface
 interface TimetableApi {
 
     @GET("Timetable/Current")
